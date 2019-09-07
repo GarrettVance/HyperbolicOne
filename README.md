@@ -1,2 +1,2 @@
 # HyperbolicOne
-Simplified, minimal hyperbolic tessellation using DirectX shaders.
+Simplified hyperbolic tessellation using DirectX shaders.
