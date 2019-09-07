@@ -53,27 +53,27 @@
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
       <Filter>Assets</Filter>
     </Image>
-    <Filter Include="Math">
-      <UniqueIdentifier>{8a3baf2b-6bf8-4199-bfa5-6d5527b5d166}</UniqueIdentifier>
-    </Filter>
     <Filter Include="HLSL">
       <UniqueIdentifier>{d2d2b2e7-8270-45a7-9b8b-f8a1e513541e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HyperbolicMethods">
+      <UniqueIdentifier>{21e22365-f448-4c3d-b4d2-052ccef708f8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="HyperbolicOneMain.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="..\..\..\HyperbolicMethods\VisualStudio\HyperbolicMethods\HyperbolicMethods.cpp">
-      <Filter>Math</Filter>
+    <ClCompile Include="HyperbolicMethods\HyperbolicMethods.cpp">
+      <Filter>HyperbolicMethods</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="HyperbolicOneMain.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="..\..\..\HyperbolicMethods\VisualStudio\HyperbolicMethods\HyperbolicMethods.h">
-      <Filter>Math</Filter>
+    <ClInclude Include="HyperbolicMethods\HyperbolicMethods.h">
+      <Filter>HyperbolicMethods</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -253,9 +253,9 @@
     <Image Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\HyperbolicMethods\VisualStudio\HyperbolicMethods\HyperbolicMethods.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="Common\DeviceResources.h" />
+    <ClInclude Include="HyperbolicMethods\HyperbolicMethods.h" />
     <ClInclude Include="HyperbolicOneMain.h" />
     <ClInclude Include="Common\DirectXHelper.h" />
     <ClInclude Include="Common\StepTimer.h" />
@@ -264,9 +264,9 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\HyperbolicMethods\VisualStudio\HyperbolicMethods\HyperbolicMethods.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Common\DeviceResources.cpp" />
+    <ClCompile Include="HyperbolicMethods\HyperbolicMethods.cpp" />
     <ClCompile Include="HyperbolicOneMain.cpp" />
     <ClCompile Include="Content\Hvy3DScene.cpp" />
     <ClCompile Include="Content\HUD.cpp" />
