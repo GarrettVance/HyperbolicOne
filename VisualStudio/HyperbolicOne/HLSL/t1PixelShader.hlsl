@@ -1,33 +1,21 @@
 //      
 //      
 
-
 #define GHV_OPTION_USE_SAMPLER
 
 #undef GHV_OPTION_AMAZING_WEIRD
 
 #undef GHV_OPTION_COLOR_INVERT
 
-
-
-Texture2D           ColorTexture        :       register(t0);
-SamplerState        LinearSampler       :       register(s0);
-
-
+Texture2D           ColorTexture        : register(t0);
+SamplerState        LinearSampler       : register(s0);
 
 cbuffer conbuf7 : register(b1)
 {
     int         schlafli_p;
     int         schlafli_q;
     float       apothem;
-    float       pixWidth;
 }
-
-
-
-
-
-
 
 struct PixelShaderInput
 {
@@ -36,31 +24,13 @@ struct PixelShaderInput
     float2      s_texco     : TEXCOORD0;
 };
 
-
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 static const  double konst_pi = 3.1415926535897932384626433;
 
-
 static const int maxIterations = 128;
-
 
 static const     float4      color0 = float4(0.0, 0.0, 1.0, 1.0);  // Interstitial color;
 static const     float4      color1 = float4(0.0, 0.0, 0.0, 1.0);  // Color for the "negative" Fundamental Domain;
 static const     float4      color2 = float4(1.0, 1.0, 1.0, 1.0);  // Color for "positive" Fundamental domain;
-
-
-
-
-
-
-
-
-
-
-
 
 
 float4 invertColorRGBA(float4 c0)
@@ -80,11 +50,6 @@ float4 invertColorRGBA(float4 c0)
 
 
 
-
-
-
-
-
 float2 std_conj(float2 a)
 {
     return float2(
@@ -93,58 +58,22 @@ float2 std_conj(float2 a)
     );
 }
 
-
-
-
-
-
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
 float squared_norm(float2 a)
 { 
-    //  the "squared" norm: 
-    //  ===================
-    //  or could use MSFT intrinsic vector dot product... TODO: 
-
     return a.x * a.x + a.y * a.y;
 }
-
-
-
-
-
-
 
 float std_abs(float2 a)
 {
     return sqrt(squared_norm(a)); 
 }
 
-
-
-
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
 float std_arg(float2 a)
 {
-    //   ghv : better to use atan2() rather than plain old atan()
+    // ghv: use atan2() rather than plain atan();
 
     return atan2(a.y, a.x); 
 }
-
-
-
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 float2 mul_complex(float2 a, float2 b) 
 {
@@ -154,12 +83,9 @@ float2 mul_complex(float2 a, float2 b)
     );
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 float2 mulbis_complex(float2 a, float2 b) 
 { 
-    //  return the product  a times (b bar)  
+    //  return the product  a times (conjugate of b)  
 
     return float2(
          a.x * b.x + a.y * b.y, 
@@ -167,14 +93,11 @@ float2 mulbis_complex(float2 a, float2 b)
     );
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 float2 div_complex(float2 a, float2 b) 
 { 
     //   return the quotient  a / b
 
-    float d = squared_norm(b);
+    float d = squared_norm(b);  // TODO: check for divide-by-zero;
 
     return float2(
         (a.x * b.x + a.y * b.y) / d, 
@@ -182,35 +105,15 @@ float2 div_complex(float2 a, float2 b)
     );
 }
 
-
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
 float2 hyper_translate(float2 p_amount, float2 p_z) 
-{ 
+{
+    //  The hyperbolic translation: 
+
     return div_complex(
         p_z + p_amount, 
         float2(1.0, 0.0) + mulbis_complex(p_z, p_amount)
     );
 }
-
-
-
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
-
-
-
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 float2 std_polar(float a)
 {
@@ -219,11 +122,6 @@ float2 std_polar(float a)
         sin(a)
     );
 }
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 
 float2 isometryA(float2 z)
 {
@@ -248,11 +146,6 @@ float2 isometryA(float2 z)
     return reflected;
 }
 
-
-
-
-
-
 bool insideFDTNarrow(float2 z)
 {
     bool insideSector = (
@@ -269,20 +162,13 @@ bool insideFDTNarrow(float2 z)
     return insideSector && insideGeodesicArc;
 }
 
-
-
-
-
-
 float2 FloorSector(float2 z_input)
 {
-
 #ifdef GHV_OPTION_AMAZING_WEIRD
     int p_or_q = schlafli_q; // Weird accident of nature;
 #else
     int p_or_q = schlafli_p; // Actual mathematics;
 #endif
-
 
     float2 z_return = z_input;
 
@@ -311,10 +197,6 @@ float2 FloorSector(float2 z_input)
 }
 
 
-
-
-
-
 float4 ps_main(PixelShaderInput input) : SV_TARGET
 {
     float4 retColor = float4(1.0, 1.0, 1.0, 1.0);
@@ -337,9 +219,7 @@ float4 ps_main(PixelShaderInput input) : SV_TARGET
 
         float theta = std_arg(zfs);
 
-
         //++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        
 
         for (int idxIteration = 0; idxIteration < maxIterations; idxIteration++)
         {
@@ -382,13 +262,11 @@ float4 ps_main(PixelShaderInput input) : SV_TARGET
         }
         //  Closes the "for" loop; 
 
-
         float2 w = zinsideFDT; 
 
         float2 gawgai = float2(0.5 + w.x, 0.5 - w.y);
 
         if (w.y < 0.00) { gawgai = float2(0.5 + w.x, 0.5 + w.y); }
-
   
         //  Draw the point. Color is determined by the parity of "spin": 
 
@@ -442,12 +320,5 @@ float4 ps_main(PixelShaderInput input) : SV_TARGET
 
     return retColor;
 }
-
-
-
-
-
-
-
 
 
