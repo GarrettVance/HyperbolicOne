@@ -5,7 +5,7 @@
 
 #include "..\Common\DeviceResources.h"
 #include "..\Common\StepTimer.h"
-#include "HyperbolicMethods.h"
+#include "..\HyperbolicMethods\HyperbolicMethods.h"
 
 
 namespace HyperbolicOne
