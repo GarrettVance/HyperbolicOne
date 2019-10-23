@@ -34,7 +34,8 @@ Hvy3DScene::Hvy3DScene(const std::shared_ptr<DX::DeviceResources>& deviceResourc
     CreateDeviceDependentResources();
     CreateWindowSizeDependentResources();
 
-    Initialize_Schlafli(5, 6);  // Classic is Schlafli {7,3}; 
+    // Initialize_Schlafli(5, 6);  // Classic is Schlafli {7,3}; 
+    Initialize_Schlafli(7, 3);  // Classic is Schlafli {7,3}; 
 }
 
 

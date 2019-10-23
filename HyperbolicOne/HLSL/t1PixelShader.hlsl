@@ -3,8 +3,6 @@
 
 #define GHV_OPTION_USE_SAMPLER
 
-#undef GHV_OPTION_AMAZING_WEIRD
-
 #undef GHV_OPTION_COLOR_INVERT
 
 Texture2D           ColorTexture        : register(t0);
@@ -146,7 +144,7 @@ float2 isometryA(float2 z)
     return reflected;
 }
 
-bool insideFDTNarrow(float2 z)
+bool insideFDTStrict(float2 z)
 {
     bool insideSector = (
         (std_arg(z) < konst_pi / schlafli_p) &&
@@ -164,17 +162,11 @@ bool insideFDTNarrow(float2 z)
 
 float2 FloorSector(float2 z_input)
 {
-#ifdef GHV_OPTION_AMAZING_WEIRD
-    int p_or_q = schlafli_q; // Weird accident of nature;
-#else
-    int p_or_q = schlafli_p; // Actual mathematics;
-#endif
-
     float2 z_return = z_input;
 
     float arg_radians = std_arg(z_input);
 
-    float s = arg_radians * p_or_q / (float)(2 * konst_pi);
+    float s = arg_radians * schlafli_p / (float)(2 * konst_pi);
 
     //  Rotate z_input until it resides inside
     //  the sector -pi/p < theta < pi/p.
@@ -185,7 +177,7 @@ float2 FloorSector(float2 z_input)
     {
         int n = (int)floor(0.5 + s);
 
-        float angle1 = -n * 2 * (float)konst_pi / p_or_q;
+        float angle1 = -n * 2 * (float)konst_pi / schlafli_p;
 
         z_return = mul_complex(
             z_input,
@@ -233,7 +225,7 @@ float4 ps_main(PixelShaderInput input) : SV_TARGET
 
             //  Test whether or not inside: 
 
-            if (insideFDTNarrow(rotz))
+            if (insideFDTStrict(rotz))
             {
                 amInside = true;
                 zinsideFDT = rotz;
@@ -248,7 +240,7 @@ float4 ps_main(PixelShaderInput input) : SV_TARGET
 
             //  Test whether or not inside: 
 
-            if (insideFDTNarrow(zinvrtd))
+            if (insideFDTStrict(zinvrtd))
             {
                 amInside = true;
                 zinsideFDT = zinvrtd;
@@ -315,7 +307,7 @@ float4 ps_main(PixelShaderInput input) : SV_TARGET
     }
     else
     {
-        retColor = float4(0.0, 0.0, 0.0, 0.0);  // paint is clear black;?;
+        retColor = float4(0.0, 0.0, 0.0, 0.0);  // paint it clear black;?;
     }
 
     return retColor;

@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="HyperbolicOne_TemporaryKey.pfx" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="HLSL\t1PixelShader.hlsl">
