@@ -15,11 +15,11 @@ void Hvy3DScene::Initialize_Schlafli(int schlafli_p, int schlafli_q)
     e_schlafli_p = schlafli_p;
     e_schlafli_q = schlafli_q;
 
-    e_circumradius = HvyDXBase::CircumradiusFromSchlafliCOSH(schlafli_p, schlafli_q);
+    e_circumradius = HvyDXBase::HC_CircumradiusFromSchlafli_D(schlafli_p, schlafli_q);
 
     //  Compute the apothem
 
-    e_apothem = HvyDXBase::ApothemFromSchlafli(schlafli_p, schlafli_q); 
+    e_apothem = HvyDXBase::HC_ApothemFromSchlafli_D(schlafli_p, schlafli_q); 
 }
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -34,8 +34,8 @@ Hvy3DScene::Hvy3DScene(const std::shared_ptr<DX::DeviceResources>& deviceResourc
     CreateDeviceDependentResources();
     CreateWindowSizeDependentResources();
 
-    // Initialize_Schlafli(5, 6);  // Classic is Schlafli {7,3}; 
-    Initialize_Schlafli(7, 3);  // Classic is Schlafli {7,3}; 
+    Initialize_Schlafli(5, 6);  // Classic is Schlafli {7,3}; 
+    // Initialize_Schlafli(7, 3);  // Classic is Schlafli {7,3}; 
 }
 
 
